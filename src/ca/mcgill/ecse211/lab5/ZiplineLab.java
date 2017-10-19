@@ -58,15 +58,19 @@ public class ZiplineLab {
 		SampleProvider usValue = usSensor.getMode("Distance");			
 		float[] usData = new float[usValue.sampleSize()];
 		
-		//TODO: Color sensor initialization
+		//Color sensor initialization
+		@SuppressWarnings("resource")	
+		SensorModes colorSensor = new EV3UltrasonicSensor(colorPort);
+		SampleProvider colorValue = usSensor.getMode("Red");			
+		float[] colorData = new float[usValue.sampleSize()];
 		
-		//set up user interface
+		//set up user interface to enter X0
 		do{
 			// clear the display
 		      t.clear();
 		      
-		      t.drawString("Enter X0, Y0, Xc, Yc", 0, 0);
-		      t.drawString("In this order only  ", 0, 1);
+		      t.drawString("Enter X0 ", 0, 0);
+		      t.drawString("         ", 0, 1);
 		      t.drawString("press up button to start", 0, 1);
 		      
 		      
@@ -77,8 +81,66 @@ public class ZiplineLab {
 			X0 = setUserInputs(X0, t, buttonChoice);
 			//for debug purposes REMOVE LATER
 			System.out.println(X0);
-			buttonChoice = Button.waitForAnyPress();
 		}
+		
+		//Enter Y0
+		do{
+			// clear the display
+		    t.clear();
+				      
+		    t.drawString("Enter Y0 ", 0, 0);
+		    t.drawString("         ", 0, 1);
+			t.drawString("press up button to start", 0, 1);
+				      
+				      
+		    buttonChoice = Button.waitForAnyPress();
+			}while(buttonChoice != Button.ID_UP);
+				
+		if (buttonChoice == Button.ID_UP) {
+			Y0 = setUserInputs(Y0, t, buttonChoice);
+			//for debug purposes REMOVE LATER
+			System.out.println(Y0);
+		}
+		
+		//Enter Xc
+		do{
+			// clear the display
+		    t.clear();
+						      
+			t.drawString("Enter Xc ", 0, 0);
+			t.drawString("         ", 0, 1);
+			t.drawString("press left button to start", 0, 1);
+						      
+						      
+			buttonChoice = Button.waitForAnyPress();
+			}while(buttonChoice != Button.ID_LEFT);
+						
+		if (buttonChoice == Button.ID_LEFT) {
+			Xc = setUserInputs(Xc, t, buttonChoice);
+			//for debug purposes REMOVE LATER
+			System.out.println(Xc);
+		}
+		
+		//Enter Yc
+		do{
+			// clear the display
+			t.clear();
+								      
+			t.drawString("Enter Yc ", 0, 0);
+			t.drawString("         ", 0, 1);
+			t.drawString("press left button to start", 0, 1);
+								      
+								      
+			buttonChoice = Button.waitForAnyPress();
+			}while(buttonChoice != Button.ID_LEFT);
+								
+		if (buttonChoice == Button.ID_LEFT) {
+			Yc = setUserInputs(Yc, t, buttonChoice);
+			//for debug purposes REMOVE LATER
+			System.out.println(Yc);
+		}
+					
+				
 		
 		
 	}
@@ -99,6 +161,7 @@ public class ZiplineLab {
 			 buttonChoice = Button.waitForAnyPress();
 		}while(buttonChoice != Button.ID_UP && buttonChoice != Button.ID_DOWN);
 		
+		//exit if button pressed is the right button
 		while( buttonChoice != Button.ID_RIGHT){
 			if (buttonChoice == Button.ID_UP) {
 				variable++;
