@@ -19,7 +19,7 @@ public class UltrasonicLocalizer {
     this.usData = usData;
   }
   
-  public void fallingEdge(){
+  public void fallingEdge(int initialOrientation){
     double backWallAngle = 0;
     double leftWallAngle = 0;
     double theta = 0;
@@ -39,17 +39,20 @@ public class UltrasonicLocalizer {
     // Return to starting position
     driver.turnTo(0);
     
-    // Correct the odometer's theta value depending on angle results (adjustment values of 205 and 205 gotten through experimentation)
+    // Correct the odometer's theta value depending on angle results (adjustment values of 215 and 205 gotten through experimentation)
     if(360-leftWallAngle > backWallAngle){
-      this.odometer.setTheta(205-(backWallAngle+leftWallAngle)/2);
+      this.odometer.setTheta(200-(backWallAngle+leftWallAngle)/2);
     }else{
-      this.odometer.setTheta(205-(backWallAngle+leftWallAngle)/2);
+      this.odometer.setTheta(220-(backWallAngle+leftWallAngle)/2);
     }
     // Orient the robot correctly
     driver.turnTo(0);
+    
+    // Set the actual theta passed by argument by the caller
+    this.odometer.setTheta(initialOrientation);
   }
   
-  public void risingEdge(){
+  public void risingEdge(int initialOrientation){
     double backWallAngle = 0;
     double leftWallAngle = 0;
     
@@ -77,6 +80,9 @@ public class UltrasonicLocalizer {
     
     // Orient the robot correctly
     driver.turnTo(0);
+
+    // Set the actual theta passed by argument by the caller
+    this.odometer.setTheta(initialOrientation);
   }
   
   //Return the angle at which the falling edge was located

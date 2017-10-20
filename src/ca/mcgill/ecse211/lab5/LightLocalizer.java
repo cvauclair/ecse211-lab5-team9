@@ -7,7 +7,8 @@ public class LightLocalizer {
   private Driver driver;
   private SampleProvider cs;
   private float[] csData;
-
+  enum LineOrientation {Horizontal, Vertical};
+  
   public LightLocalizer(Odometer odometer, Driver driver, SampleProvider cs, float[] csData){
     this.odometer = odometer;
     this.driver = driver;
@@ -15,12 +16,13 @@ public class LightLocalizer {
     this.csData = csData;
   }
   
-  public void localize(){
+  // Localize the robot to (x0,y0) (in cm) using a "soft-hard-coded" technique
+  public void localize(double x0, double y0){
     // Slow down robot so that it does not miss the line
     this.driver.setForwardSpeed(100);
     
     // Correct the robot's odometer's Y position by finding a horizontal line
-    lineLocalization(true);
+    lineLocalization(LineOrientation.Horizontal);
     
     // Get away from the last line so the robot does not detect it again
     this.driver.forward(2);
@@ -29,16 +31,19 @@ public class LightLocalizer {
     this.driver.turnBy(45,false);
     
     // Correct the robot's odometer's X position by finding a vertical line
-    lineLocalization(false);
+    lineLocalization(LineOrientation.Vertical);
     
-    // Once the odometer's position is correctly set, travel to (0,0) and orient the robot correctly
+    // Once the odometer's position is correctly set, travel to (x0,y0) and orient the robot correctly
     this.driver.travelTo(0,0);
     this.driver.turnTo(0);
+    this.odometer.setX(x0);
+    this.odometer.setY(y0);
   }
   
-  // Method that localizes the odometer's Y position by detecting a horizontal line (horizontalLine = true) or
-  // its X position by detecting a vertical line (horizontalLine = false)
-  private void lineLocalization(boolean horizontalLine){    
+  // Method that sets the odometer's Y position by detecting a horizontal line (horizontalLine = true) or
+  // its X position by detecting a vertical line (horizontalLine = false). The odometer's Y value (or 
+  // X value depending on horizaontalLine) is set to initialValue
+  private void lineLocalization(LineOrientation lineOrientation){    
     // Set robot to driver forward 
     this.driver.forward();
     
@@ -49,9 +54,9 @@ public class LightLocalizer {
     this.driver.stop();
     
     // Correct the odometer's Y or X value depending on whether the crossed line is vertical or horizontal
-    if(horizontalLine){
+    if(lineOrientation == LineOrientation.Horizontal){
       this.odometer.setY(0);
-    }else{
+    }else if(lineOrientation == LineOrientation.Vertical){
       this.odometer.setX(0);
     }
   }
