@@ -144,6 +144,8 @@ public class ZiplineLab {
     driver.travelTo(X0*SQUARE_WIDTH, Y0*SQUARE_WIDTH);
     driver.travelTo(Xc*SQUARE_WIDTH, Yc*SQUARE_WIDTH);
     
+    //TODO: Travel through the zipline
+    
     Button.waitForAnyPress();
     return;
   }
