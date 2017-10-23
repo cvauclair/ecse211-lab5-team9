@@ -109,28 +109,28 @@ public class ZiplineLab {
     switch(SC){
       case 0:
         // Robot starts in bottom left corner
-        ultrasonicLocalizer.fallingEdge(0);
+        ultrasonicLocalizer.risingEdge(0);
         
         // Start light localizer
         lightLocalizer.localize(1*SQUARE_WIDTH,1*SQUARE_WIDTH);
         break;
       case 1:
         // Robot starts in bottom left corner
-        ultrasonicLocalizer.fallingEdge(270);
+        ultrasonicLocalizer.risingEdge(270);
         
         // Start light localizer
         lightLocalizer.localize(7*SQUARE_WIDTH,1*SQUARE_WIDTH);
         break;
       case 2:
         // Robot starts in bottom left corner
-        ultrasonicLocalizer.fallingEdge(180);
+        ultrasonicLocalizer.risingEdge(180);
         
         // Start light localizer
         lightLocalizer.localize(7*SQUARE_WIDTH,7*SQUARE_WIDTH);
         break;
       case 3:
         // Robot starts in bottom left corner
-        ultrasonicLocalizer.fallingEdge(90);
+        ultrasonicLocalizer.risingEdge(90);
         
         // Start light localizer
         lightLocalizer.localize(1*SQUARE_WIDTH,7*SQUARE_WIDTH);
