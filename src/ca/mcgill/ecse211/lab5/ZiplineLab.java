@@ -59,92 +59,94 @@ public class ZiplineLab {
     boolean done = false;
 
     // Ultrasonic sensor initialization
-    SensorModes usSensor = new EV3UltrasonicSensor(usPort);
-    SampleProvider usDistance = usSensor.getMode("Distance");
-    float[] usData = new float[usDistance.sampleSize()];
-
-    // Color sensor initialization
-    SensorModes csSensor = new EV3ColorSensor(csPort);
-    SampleProvider csLight = csSensor.getMode("Red");
-    float[] csData = new float[csLight.sampleSize()];
-    
-    final TextLCD t = LocalEV3.get().getTextLCD();
+//    SensorModes usSensor = new EV3UltrasonicSensor(usPort);
+//    SampleProvider usDistance = usSensor.getMode("Distance");
+//    float[] usData = new float[usDistance.sampleSize()];
+//
+//    // Color sensor initialization
+//    SensorModes csSensor = new EV3ColorSensor(csPort);
+//    SampleProvider csLight = csSensor.getMode("Red");
+//    float[] csData = new float[csLight.sampleSize()];
+//    
+//    final TextLCD t = LocalEV3.get().getTextLCD();
     final Odometer odometer = new Odometer(leftMotor, rightMotor, WHEEL_RADIUS, BASE_WIDTH);
-    
-    OdometryDisplay odometryDisplay = new OdometryDisplay(odometer, t);
-    
+//    
+//    OdometryDisplay odometryDisplay = new OdometryDisplay(odometer, t);
+//    
     Driver driver = new Driver(odometer, leftMotor, rightMotor, WHEEL_RADIUS, BASE_WIDTH);
-    
-    UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer(odometer, driver, usDistance, usData);
-    LightLocalizer lightLocalizer = new LightLocalizer(odometer, driver, csLight, csData);
-    
-    // Start escape thread
-    (new Thread() {
-      public void run() {
-        while (Button.waitForAnyPress() != Button.ID_ESCAPE);
-        System.exit(0);
-      }
-    }).start();
-    
-    
-    // Get required user inputs
-    SC = getUserInput(0,3,"SC",t);
-    X0 = getUserInput(1,7,"X0",t);
-    Y0 = getUserInput(1,7,"Y0",t);
-    Xc = getUserInput(1,7,"Xc",t);
-    Yc = getUserInput(1,7,"Yc",t);
-  
-    t.clear();
-    t.drawString("SC = " + SC, 0, 0);
-    t.drawString("X0 = " + X0, 0, 1);
-    t.drawString("Y0 = " + Y0, 0, 2);
-    t.drawString("Xc = " + Xc, 0, 3);
-    t.drawString("Yc = " + Yc, 0, 4);
-  
-    Button.waitForAnyPress();
-    
-    odometer.start();
-    odometryDisplay.start();
-    
-    switch(SC){
-      case 0:
-        // Robot starts in bottom left corner
-        ultrasonicLocalizer.risingEdge(0);
-        
-        // Start light localizer
-        lightLocalizer.localize(1*SQUARE_WIDTH,1*SQUARE_WIDTH);
-        break;
-      case 1:
-        // Robot starts in bottom left corner
-        ultrasonicLocalizer.risingEdge(270);
-        
-        // Start light localizer
-        lightLocalizer.localize(7*SQUARE_WIDTH,1*SQUARE_WIDTH);
-        break;
-      case 2:
-        // Robot starts in bottom left corner
-        ultrasonicLocalizer.risingEdge(180);
-        
-        // Start light localizer
-        lightLocalizer.localize(7*SQUARE_WIDTH,7*SQUARE_WIDTH);
-        break;
-      case 3:
-        // Robot starts in bottom left corner
-        ultrasonicLocalizer.risingEdge(90);
-        
-        // Start light localizer
-        lightLocalizer.localize(1*SQUARE_WIDTH,7*SQUARE_WIDTH);
-        break;
-      default:
-        break;
-    }
+//    
+//    UltrasonicLocalizer ultrasonicLocalizer = new UltrasonicLocalizer(odometer, driver, usDistance, usData);
+//    LightLocalizer lightLocalizer = new LightLocalizer(odometer, driver, csLight, csData);
+    ZiplineControl ziplineControl = new ZiplineControl(upMotor, driver);
+//    
+//    // Start escape thread
+//    (new Thread() {
+//      public void run() {
+//        while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+//        System.exit(0);
+//      }
+//    }).start();
+//    
+//    
+//    // Get required user inputs
+//    SC = getUserInput(0,3,"SC",t);
+//    X0 = getUserInput(1,7,"X0",t);
+//    Y0 = getUserInput(1,7,"Y0",t);
+//    Xc = getUserInput(1,7,"Xc",t);
+//    Yc = getUserInput(1,7,"Yc",t);
+//  
+//    t.clear();
+//    t.drawString("SC = " + SC, 0, 0);
+//    t.drawString("X0 = " + X0, 0, 1);
+//    t.drawString("Y0 = " + Y0, 0, 2);
+//    t.drawString("Xc = " + Xc, 0, 3);
+//    t.drawString("Yc = " + Yc, 0, 4);
+//  
+//    Button.waitForAnyPress();
+//    
+//    odometer.start();
+//    odometryDisplay.start();
+//    
+//    switch(SC){
+//      case 0:
+//        // Robot starts in bottom left corner
+//        ultrasonicLocalizer.risingEdge(0);
+//        
+//        // Start light localizer
+//        lightLocalizer.localize(1*SQUARE_WIDTH,1*SQUARE_WIDTH);
+//        break;
+//      case 1:
+//        // Robot starts in bottom left corner
+//        ultrasonicLocalizer.risingEdge(270);
+//        
+//        // Start light localizer
+//        lightLocalizer.localize(7*SQUARE_WIDTH,1*SQUARE_WIDTH);
+//        break;
+//      case 2:
+//        // Robot starts in bottom left corner
+//        ultrasonicLocalizer.risingEdge(180);
+//        
+//        // Start light localizer
+//        lightLocalizer.localize(7*SQUARE_WIDTH,7*SQUARE_WIDTH);
+//        break;
+//      case 3:
+//        // Robot starts in bottom left corner
+//        ultrasonicLocalizer.risingEdge(90);
+//        
+//        // Start light localizer
+//        lightLocalizer.localize(1*SQUARE_WIDTH,7*SQUARE_WIDTH);
+//        break;
+//      default:
+//        break;
+//    }
     
     
     // Travel to (X0,Y0) and then (Xc,Yc)
-    driver.travelTo(X0*SQUARE_WIDTH, Y0*SQUARE_WIDTH);
-    driver.travelTo(Xc*SQUARE_WIDTH, Yc*SQUARE_WIDTH);
+//    driver.travelTo(X0*SQUARE_WIDTH, Y0*SQUARE_WIDTH);
+//    driver.travelTo(Xc*SQUARE_WIDTH, Yc*SQUARE_WIDTH);
     
     //TODO: Travel through the zipline
+    ziplineControl.traverseZipline();
     
     Button.waitForAnyPress();
     return;

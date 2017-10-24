@@ -25,7 +25,7 @@ public class LightLocalizer {
     lineLocalization(LineOrientation.Horizontal);
     
     // Get away from the last line so the robot does not detect it again
-    this.driver.forward(2);
+    this.driver.forward(2,false);
     
     // Turn robot so that the next line the robot crosses will be a vertical line
     this.driver.turnBy(45,false);
