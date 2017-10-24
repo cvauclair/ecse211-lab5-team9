@@ -13,8 +13,8 @@ public class ZiplineControl {
   
   public void traverseZipline(){
     // Driver a bit forward to help the pulley get on zipline
-    this.driver.setForwardSpeed(50);
-    this.driver.forward(8,true);
+    this.driver.setForwardSpeed(150);
+    this.driver.forward();
     
     // Note: rotations are negative because motor is built the wrong way
     // Rotate slowly for the first third of the rotations 
